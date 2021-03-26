@@ -87,7 +87,7 @@ public class Model {
 		for(String s: inputTextList)
 		{
 			while(pavimento <= tetto) {
-				meta = (pavimento+tetto)/2;
+				meta = ((int) (pavimento+tetto)/2);
 				if(s.compareTo(this.dizionario.get(meta)) == 0)
 				{
 					count ++;
