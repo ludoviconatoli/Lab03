@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class Model {
 
-	TreeMap<String, String> dizionario = new TreeMap<>();
+	LinkedList<String> dizionario = new LinkedList<>();
 	
 	public void loadDictionary(String language) {
 		try {
@@ -18,7 +18,7 @@ public class Model {
 			
 			String riga;
 			while((riga=br.readLine()) != null) {
-				this.dizionario.put(riga, riga);
+				this.dizionario.add(riga);
 			}
 			
 			br.close();
@@ -30,13 +30,80 @@ public class Model {
 		}
 	}
 	
-	public List<RichWord> spellCheckText(List<String> inputTextList){
+	public List<RichWord> spellCheckTextLinear(List<String> inputTextList){
 		
 		LinkedList<RichWord> rw = new LinkedList<>();
+		int count = 0;
 		for(String s: inputTextList)
-			if(this.dizionario.get(s) == null)
+		{
+			for(String st: this.dizionario)
+			{
+				if(st.equals(s))
+			    {
+			    	count++;
+			    	break;
+			    }
+			}
+			if(count == 0)
+			{
 				rw.add(new RichWord(s));
+			}
+			count = 0;
+		}
 
+		return rw;
+	}
+	
+	public List<RichWord> spellCheckTextDichotomic(List<String> inputTextList){
+		
+		LinkedList<RichWord> rw = new LinkedList<>();
+		int tetto = this.dizionario.size();
+		int meta = 0;
+		int pavimento = 0;
+		int count = 0;
+		/*for(String s: inputTextList)
+		{
+			for(int i=meta; i<tetto; i++) {
+				if(s.compareTo(this.dizionario.get(i)) == 0)
+				{
+					count++;
+					break;
+				}else if(s.compareTo(this.dizionario.get(i)) < 0 ) {
+					tetto = meta;
+					meta = (meta + pavimento)/2;
+					i = meta; 
+				}else {
+					pavimento = i;
+					meta = meta + ((tetto - meta)/2) ;
+					i = meta;
+				}
+			}
+			
+			if(count == 0)
+				rw.add(new RichWord(s));
+			
+			count = 0;
+		}*/
+		for(String s: inputTextList)
+		{
+			while(pavimento <= tetto) {
+				meta = (pavimento+tetto)/2;
+				if(s.compareTo(this.dizionario.get(meta)) == 0)
+				{
+					count ++;
+					break;
+				}else if(s.compareTo(this.dizionario.get(meta)) < 0) {
+					tetto = meta-1;
+				}else {
+					pavimento = meta+1;
+				}
+					
+			}
+			if(count == 0)
+				rw.add(new RichWord(s));
+			
+			count = 0;
+		}
 		return rw;
 	}
 }

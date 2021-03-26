@@ -78,7 +78,7 @@ public class FXMLController {
         }
         
         LinkedList<RichWord> rw = new LinkedList<>();
-        rw.addAll(this.model.spellCheckText(testo));
+        rw.addAll(this.model.spellCheckTextDichotomic(testo));
         
         if(rw.isEmpty())
         {
