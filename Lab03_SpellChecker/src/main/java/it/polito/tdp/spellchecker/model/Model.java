@@ -18,7 +18,7 @@ public class Model {
 			
 			String riga;
 			while((riga=br.readLine()) != null) {
-				this.dizionario.add(riga);
+				this.dizionario.add(riga.toLowerCase());
 			}
 			
 			br.close();
